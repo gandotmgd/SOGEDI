@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- In order to add or overwrite string values, please, -->
+<!-- create your own XML strings file (e.i. project-resources.xml)". -->
+<res>
+	<id value="LG_PROJECT_STRING">
+		<lang value="fr" flag="a">Ma chaine spécifique</lang>
+		<lang value="en" flag="a">My specific string</lang>
+	</id>
+</res>
