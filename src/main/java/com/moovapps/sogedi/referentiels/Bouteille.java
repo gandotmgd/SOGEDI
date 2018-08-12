@@ -107,27 +107,12 @@ public class Bouteille extends BaseStorageResourceExtension {
 					suiviBouteille.setValue("DateDeSuivi", new Date());
 					suiviBouteille.setValue("CodeEmballage", (String) storageResource.getValue("CodeEmballage"));
 					suiviBouteille.setValue("TypeGazSuivi", (String) storageResource.getValue("TypeGazBout"));
-					suiviBouteille.setValue("EtatBoutSuivi", "Vide traitée");
-					suiviBouteille.setValue("Depot", "AGENCE");
-					suiviBouteille.setValue("CodeTiersMouv", "AGENCE");
-					suiviBouteille.setValue("EntreeSortie", "E");
-					suiviBouteille.setValue("DateMouv", new Date());
-					String typeGaz = (String) storageResource.getValue("TypeGazBout");
-					if(typeGaz != null && (typeGaz.equals("Acétylène N26") || typeGaz.equals("Acétylène dissout")))
-					{
-						suiviBouteille.setValue("NiveauChargeBoutSuivi", 0);
-					}
-//					suiviBouteille.setValue("DateDernControle", (Date) storageResource.getValue("DateDernierControle"));
-//					Float periodeControle = (Float) storageResource.getValue("PeriodeControle");
-//					if(periodeControle != null)
-//					{
-//						Date dateDernierControle = (Date) storageResource.getValue("DateDernierControle");
-//						if(dateDernierControle != null)
-//						{
-//							/********************************************************************/
-//						}
-//					}
-					//suiviBouteille.setValue("DateProchControle", "");
+					suiviBouteille.setValue("EtatBoutSuivi", (String) storageResource.getValue("EtatBouteille"));
+					suiviBouteille.setValue("CodeTiersOrig", (String) storageResource.getValue("CodeTiersOrig"));
+					suiviBouteille.setValue("CodeTiersMouv", (String) storageResource.getValue("CodeTiersMouvement"));
+					suiviBouteille.setValue("EntreeSortie", (String) storageResource.getValue("EntreeSortie"));
+					suiviBouteille.setValue("DateMouv", (Date) storageResource.getValue("DateMouv"));
+					
 					storageResource.setValue("Suivi", "Oui");
 					suiviBouteille.save(context);
 				}
@@ -137,8 +122,7 @@ public class Bouteille extends BaseStorageResourceExtension {
 					return false;
 				}
 				
-			}
-			
+			}			
 		} catch (Exception e) {
 			log.error("Erreur dans la classe com.moovapps.sogedi.referentiels.Bouteille méthode onBeforeSave: "+e.getClass()+" - "+e.getMessage());
 		}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<agentTemplates>
+
+	<agentTemplate name="AttributionDroitDeCreation" className="com.moovapps.sogedi.vente.agents.AttributionDroitDeCreation" 
+		label="Attribution du droits d'initiation des processus aux responsables de dépôts" description="Agent d'attribution du droits d'initiation des processus aux responsables de dépôts">
+	</agentTemplate>
+	
+	<agentTemplate name="AgentDeCreationSyntheseJournalière" className="com.moovapps.sogedi.acquisitionproduction.agents.AgentDeCreationSyntheseJournalière" 
+		label="Génération de la synthèse journalière de production de bouteilles" description="Agent permettant de générer la synthèse journalière de production de bouteilles">
+	</agentTemplate>
+		
+</agentTemplates>
