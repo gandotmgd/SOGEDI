@@ -130,6 +130,7 @@ public class EnregistrementCommande extends BaseDocumentExtension{
 						getResourceController().setEditable("TypeClient", false);
 						getResourceController().setEditable("Adresse", false);
 						getResourceController().setEditable("Telephone", false);
+						getResourceController().setEditable("Email", false);
 						getInfosCLIENT(nomClient);
 					}
 					else
@@ -150,6 +151,10 @@ public class EnregistrementCommande extends BaseDocumentExtension{
 						getResourceController().setEditable("Telephone", true);
 						getResourceController().setMandatory("Telephone", true);
 						
+						getWorkflowInstance().setValue("Email", null);
+						getResourceController().setEditable("Email", true);
+						getResourceController().setMandatory("Email", true);
+						
 						
 						
 						
@@ -161,6 +166,7 @@ public class EnregistrementCommande extends BaseDocumentExtension{
 					getWorkflowInstance().setValue("TypeClient", null);
 					getWorkflowInstance().setValue("Adresse", null);
 					getWorkflowInstance().setValue("Telephone", null);
+					getWorkflowInstance().setValue("Email", null);
 				}
 			}
 			
@@ -285,6 +291,9 @@ public class EnregistrementCommande extends BaseDocumentExtension{
 				getWorkflowInstance().setValue("Telephone", storageResource.getValue("Telephone"));
 				getResourceController().setThrowEvents("Telephone", true);
 				
+				getWorkflowInstance().setValue("Email", storageResource.getValue("EmailClient"));
+				getResourceController().setThrowEvents("Email", true);
+				
 			}
 			else
 			{
@@ -292,6 +301,7 @@ public class EnregistrementCommande extends BaseDocumentExtension{
 				getWorkflowInstance().setValue("TypeClient", null);
 				getWorkflowInstance().setValue("Adresse", null);
 				getWorkflowInstance().setValue("Telephone", null);
+				getWorkflowInstance().setValue("Email", null);
 			}
 		}
 		catch (Exception e)

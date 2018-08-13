@@ -36,6 +36,8 @@ public class AgentDeCreationSyntheseJournalière extends BaseAgent {
 	@Override
 	protected void execute() {
 		try {
+			Date now = new Date();
+			
 			context = getWorkflowModule().getSysadminContext();
 			organization = getDirectoryModule().getOrganization(context, getWorkflowModule().getConfiguration().getStringProperty("com.moovapps.sogedi.organization.name"));
 			project = getProjectModule().getProject(context, getWorkflowModule().getConfiguration().getStringProperty("com.moovapps.sogedi.project.name"), organization);
@@ -51,29 +53,41 @@ public class AgentDeCreationSyntheseJournalière extends BaseAgent {
 			Collection<IWorkflowInstance> rampes = viewController.evaluate(workflow);
 			if(rampes != null && rampes.size() > 0)
 			{
-				Collection<String> allBouteilles = SyntheseCampagne.getAllbouteilles(rampes);
-				Map<String, Float> nombreParType = new HashMap<>();
-				if(allBouteilles != null && allBouteilles.size() > 0)
+				for(IWorkflowInstance rampe : rampes)
 				{
-					nombreParType = SyntheseCampagne.getNombreParType(context, getWorkflowModule(), refBout, allBouteilles);
-					if(nombreParType != null && nombreParType.size() > 0)
+					Date dateCreation = (Date) rampe.getValue("sys_CreationDate");
+					
+					if(dateCreation.compareTo(now) != 0)
 					{
-						IWorkflowInstance syntheseJournaliere = getWorkflowModule().createWorkflowInstance(context, workflowCible, null);
-						if(syntheseJournaliere != null)
+						rampes.remove(rampe);
+					}
+				}
+				if(rampes != null && rampes.size() > 0)
+				{
+					Collection<String> allBouteilles = SyntheseCampagne.getAllbouteilles(rampes);
+					Map<String, Float> nombreParType = new HashMap<>();
+					if(allBouteilles != null && allBouteilles.size() > 0)
+					{
+						nombreParType = SyntheseCampagne.getNombreParType(context, getWorkflowModule(), refBout, allBouteilles);
+						if(nombreParType != null && nombreParType.size() > 0)
 						{
-							syntheseJournaliere.setValue("SyntheseJour", null);
-							SyntheseCampagne.getSynthese(context,getWorkflowModule(),syntheseJournaliere, refBout, nombreParType, allBouteilles,"SyntheseJour");
-							
-							taskInstance = syntheseJournaliere.getCurrentTaskInstance(context);
-							if(taskInstance != null)
+							IWorkflowInstance syntheseJournaliere = getWorkflowModule().createWorkflowInstance(context, workflowCible, null);
+							if(syntheseJournaliere != null)
 							{
-								action = taskInstance.getTask().getAction("Envoyer");
-								if(action != null)
+								syntheseJournaliere.setValue("SyntheseJour", null);
+								SyntheseCampagne.getSynthese(context,getWorkflowModule(),syntheseJournaliere, refBout, nombreParType, allBouteilles,"SyntheseJour");
+								
+								taskInstance = syntheseJournaliere.getCurrentTaskInstance(context);
+								if(taskInstance != null)
 								{
-									getWorkflowModule().end(context, taskInstance, action, "Génération automatique de la synthèse journalière");
+									action = taskInstance.getTask().getAction("Envoyer");
+									if(action != null)
+									{
+										getWorkflowModule().end(context, taskInstance, action, "Génération automatique de la synthèse journalière");
+									}
 								}
+								syntheseJournaliere.save(context);
 							}
-							syntheseJournaliere.save(context);
 						}
 					}
 				}
